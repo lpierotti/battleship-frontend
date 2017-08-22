@@ -8,7 +8,7 @@ function CreateGrid() {
 			this.id = id++
 			this.user = user
 			this.placedShipCoordinates = {}
-			this.playingBoard = {}
+			this.firingBoard = {}
 			this.render();
 			all.push(this)
 		}
@@ -35,7 +35,8 @@ function CreateGrid() {
 		}
 
 		renderPlayingBoard() {
-			var ownCoordinates = this.placedShipCoordinates
+			var ownCoordinates = this.placedShipCoordinates;
+			var firingCoordinates = this.firingBoard;
 			var board = "<h2> Your board</h2>";
 			var playingBoard = "<h2> Firing Board </h2>";
 			var x = 0;
@@ -49,7 +50,7 @@ function CreateGrid() {
 				x++;
 				y = 0;
 			}
-			document.getElementById('grid-container').innerHTML = playingBoard;
+			document.getElementById('firing-grid').innerHTML = playingBoard;
 			document.getElementById('players-grid').innerHTML = board;
 			for (var coordinate in ownCoordinates) {
 				if (ownCoordinates[coordinate] === 1){
@@ -57,6 +58,14 @@ function CreateGrid() {
 					document.querySelector(`div[data-id="${coordinate}"]`).style = "background-color: black;"
 				} else if (ownCoordinates[coordinate] === 2) {
 					document.querySelector(`div[data-id="${coordinate}"`).style = "background-color: red;"
+				}
+			}
+
+			for (var coordinate in firingCoordinates) {
+				if (firingCoordinates[coordinate] === 2) {
+					document.getElementById(coordinate).style = "background-color: red;"
+				} else if (firingCoordinates[coordinate] === 0) {
+					document.getElementById(coordinate).style = "background-color: blue;"
 				}
 			}
 		}

@@ -27,4 +27,9 @@ document.addEventListener('DOMContentLoaded', function(){
 
 	})
 
+	document.getElementById('firing-grid').addEventListener('click', function(event) {
+		var firingCoordinate = event.target.id
+		var player = 
+	})
+
 });
