@@ -29,7 +29,18 @@ document.addEventListener('DOMContentLoaded', function(){
 
 	document.getElementById('firing-grid').addEventListener('click', function(event) {
 		var firingCoordinate = event.target.id
-		var player = 
+		var currentGridId = document.querySelector('h2').id
+		var currentGrid = Grid.all()[parseInt(currentGridId)]
+		var opponentsGrid;
+		Grid.all().forEach(function(grid) {
+			if (grid.id !== currentGrid.id) {
+				debugger
+				opponentsGrid = grid
+			}
+		})
+		
+		currentGrid.fireTorpedo(firingCoordinate, opponentsGrid)
+
 	})
 
 });

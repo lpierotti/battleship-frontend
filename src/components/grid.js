@@ -29,16 +29,17 @@ function CreateGrid() {
 			Ship.insertShips()
 		}
 
-		static renderPlayingBoard(playerName) {
+		static renderBoards(playerName) {
 			var currentPlayersGrid = Grid.all().find(grid => grid.user === playerName)
+			document.getElementById('grid-container').remove()
 			currentPlayersGrid.renderPlayingBoard()
 		}
 
 		renderPlayingBoard() {
 			var ownCoordinates = this.placedShipCoordinates;
 			var firingCoordinates = this.firingBoard;
-			var board = "<h2> Your board</h2>";
-			var playingBoard = "<h2> Firing Board </h2>";
+			var board = `<h2 id="${this.id}"> ${this.user}'s Board </h2>`;
+			var playingBoard = `<h2 id="${this.id}"> Firing Board </h2>`;
 			var x = 0;
 			var y = 0;
 			for (var i = 0; i < 10; i++) {
@@ -57,10 +58,11 @@ function CreateGrid() {
 
 					document.querySelector(`div[data-id="${coordinate}"]`).style = "background-color: black;"
 				} else if (ownCoordinates[coordinate] === 2) {
-					document.querySelector(`div[data-id="${coordinate}"`).style = "background-color: red;"
+					document.querySelector(`div[data-id="${coordinate}"]`).style = "background-color: red;"
+				} else if (ownCoordinates[coordinate] === 0) {
+					document.querySelector(`div[data-id="${coordinate}"]`).style = "background-color: blue;"
 				}
 			}
-
 			for (var coordinate in firingCoordinates) {
 				if (firingCoordinates[coordinate] === 2) {
 					document.getElementById(coordinate).style = "background-color: red;"
@@ -77,7 +79,7 @@ function CreateGrid() {
 			}
 			if (Grid.all().length === 2 && Object.keys(this.placedShipCoordinates).length === 10) {
 				var firstPlayer = Grid.all()[0].user
-				Grid.renderPlayingBoard(firstPlayer)
+				Grid.renderBoards(firstPlayer)
 			}
 		}
 
@@ -91,6 +93,45 @@ function CreateGrid() {
 			</form>
 			`
 	}
+
+	fireTorpedo(firingCoordinate, opponentsGrid) {
+		debugger
+		if (Object.keys(opponentsGrid.placedShipCoordinates).includes(firingCoordinate)) {
+			opponentsGrid.placedShipCoordinates[firingCoordinate] = 2
+			this.firingBoard[firingCoordinate] = 2
+			alert('you have hit their ship!')
+			document.getElementById(firingCoordinate).style = "background-color: red;"
+		} else {
+			debugger
+			opponentsGrid.placedShipCoordinates[firingCoordinate] = 0
+			this.firingBoard[firingCoordinate] = 0
+			alert('you have missed')
+			document.getElementById(firingCoordinate).style = "background-color: blue;"
+		}
+		opponentsGrid.renderPlayingBoard()
+	}
+
+
+
+
+	//
+	// 	}
+	// 	for (var coordinate in opponentsGrid.placedShipCoordinates) {
+	// 		if (coordinate === firingCoordinate) {
+	// 			opponentsGrid.placedShipCoordinates[coordinate] = 2
+	// 			this.firingBoard[coordinate] = 2
+	// 			debugger
+	// 			document.getElementById(firingCoordinate).style = "background-color: red;"
+	// 			alert('you have hit their ship!')
+	// 		} else {
+	// 			opponentsGrid.placedShipCoordinates[firingCoordinate] = 0
+	// 			this.firingBoard[firingCoordinate] = 0
+	// 			document.getElementById(firingCoordinate).style = "background-color: blue;"
+	// 			alert('you have missed')
+	// 		}
+	// 	}
+	// 	opponentsGrid.renderPlayingBoard()
+	// }
 
 	addShip(coordinates){
         document.getElementById(coordinates).style = "background-color: black;"
