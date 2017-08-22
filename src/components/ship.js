@@ -26,35 +26,66 @@ function CreateShip() {
 			`
 		}
 
+		setCoordinates(selectedCoordinates) {
+			if (parseInt(this.size) !== this.coordinates.length) {
+				this.checkPosition(selectedCoordinates)
+				if (Object.keys(this.grid.placedShipCoordinates).length === 10) {
+					alert('you have completed placing this ship. please give the computer to your oponent')
+				} else if (parseInt(this.size) === this.coordinates.length){
+					alert('you have completed placing this ship')
+				}
+			}
+		}
+
+
+
 
 		checkPosition(selectedCoordinates) {
-			let xy = selectedCoordinates.split(",").forEach(number => (parseInt(number)))
-			if (!this.grid.placedShipCoordinates[selectedCoordinates] && this.coordinates.length === 0 ) {
-				this.coordinates.push(xy)
-			} else if (!this.grid.placedShipCoordinates[selectedCoordinates] && this.coordinates.length === 1) {
-				if (xy[0] === this.coordinates[0][0] + 1 || xy[0] === this.coordinates[0][0] - 1 && xy[1] === this.coordinates[0][1]) {
-					this.coordinates.push(xy)
-				} else if (xy[1] === this.coordinates[0][1] + 1 || xy[1] === this.coordinates[0][1] - 1 && xy[0] === this.coordinates[0][0]) {
-					this.coordinates.push(xy)
-				} else {
-					alert('this is an invalid position, please choose another.')
-				}
-			} else if (!this.grid.placedShipCoordinates[selectedCoordinates] && this.coordinates.length === 2) {
-				
-			}
-		}
+             let xy = selectedCoordinates.split(",").map(number => (parseInt(number)))
+             var gridShipKeys = Object.keys(this.grid.placedShipCoordinates)
+             if (!(gridShipKeys.includes(selectedCoordinates)) && this.coordinates.length === 0 ) {
+                 this.coordinates.push(xy)
+                 this.grid.addShip(selectedCoordinates)
+                 this.grid.placedShipCoordinates[selectedCoordinates] = 1;
 
-		placeShip(selectedCoordinates) {
-			if (this.coordinates.length === this.size) {
-				alert("You've already placed this ship")
-			} elseif() {
-
-
-				this.grid.ships[selectedCoordinates] = 1
-			}
-		}
-
-
+             } else if (!gridShipKeys.includes(selectedCoordinates) && this.coordinates.length === 1) {
+                 if ((xy[0] === this.coordinates[0][0] + 1 || xy[0] === this.coordinates[0][0] - 1) && xy[1] === this.coordinates[0][1]) {
+                     this.coordinates.push(xy)
+                     this.grid.addShip(selectedCoordinates)
+                     this.grid.placedShipCoordinates[selectedCoordinates] = 1;
+                 } else if ((xy[1] === this.coordinates[0][1] + 1 || xy[1] === this.coordinates[0][1] - 1) && xy[0] === this.coordinates[0][0]) {
+                     this.coordinates.push(xy)
+                     this.grid.addShip(selectedCoordinates)
+                     this.grid.placedShipCoordinates[selectedCoordinates] = 1;
+                 }
+             } else if (!gridShipKeys.includes(selectedCoordinates) && this.coordinates.length > 1) {
+                 var lastCoordinates = this.coordinates[this.coordinates.length - 1];
+                 var secondToLast = this.coordinates[this.coordinates.length - 2];
+                 if (secondToLast[0] - lastCoordinates[0] === 0) {
+                     if ((secondToLast[1] - lastCoordinates[1] > 0) && (xy[1] === lastCoordinates[1] - 1 && xy[0] === lastCoordinates[0])) {
+                         this.coordinates.push(xy);
+                         this.grid.addShip(selectedCoordinates)
+                         this.grid.placedShipCoordinates[selectedCoordinates] = 1;
+                     } else if ((secondToLast[1] - lastCoordinates[1] < 0) && (xy[1] === lastCoordinates[1] + 1 && xy[0] === lastCoordinates[0])) {
+                         this.coordinates.push(xy);
+                         this.grid.addShip(selectedCoordinates)
+                         this.grid.placedShipCoordinates[selectedCoordinates] = 1;
+                     }
+                 } else if (secondToLast[1] - lastCoordinates[1] === 0) {
+                     if ((secondToLast[0] - lastCoordinates[0] > 0) && (xy[0] === lastCoordinates[0] - 1 && xy[1] === lastCoordinates[1])) {
+                         this.coordinates.push(xy);
+                         this.grid.addShip(selectedCoordinates)
+                         this.grid.placedShipCoordinates[selectedCoordinates] = 1;
+                     } else if ((secondToLast[0] - lastCoordinates[0] < 0) && (xy[0] === lastCoordinates[0] + 1 && xy[1] === lastCoordinates[1])) {
+                         this.coordinates.push(xy);
+                         this.grid.addShip(selectedCoordinates)
+                         this.grid.placedShipCoordinates[selectedCoordinates] = 1;
+                     }
+                 }
+            }//   else {
+            //      alert('this is an invalid position, please choose another.')
+            //  }
+         }
 	}
 }
 
